@@ -1,0 +1,11 @@
+1. Shuffle Deck
+2. Give Player 1 card face up
+3. Give Dealer 1 card face down
+4. Give Player 2nd card face up
+5. Give Dealer 2nd card face up
+6. Player has option to hit, stand, double, or split
+7. Depending on what player does, dealer will give player more cards, or flip over their card
+8. If player goes over 21, they bust and dealer wins
+9. Else, dealer shows both cards
+10. If dealer has less than 17, they deal themself cards until they get >= 17
+11. If dealer gets > 21, they bust and player wins
