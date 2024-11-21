@@ -23,7 +23,6 @@ class Suits(Enum):
     DIAMONDS = "Diamonds"
     HEARTS = "Hearts" 
 
-
 class Player:
     def __init__(self, score, balance, hand):
         self.score = score
@@ -39,12 +38,17 @@ class Game:
     random.shuffle(deck)
     for card in deck:
         print(f"{card[0].value} of {card[1].value}")
+    print("\n")
 
-    player = Player(0, 0, [(Ranks.TWO, Suits.CLUBS), (Ranks.TWO, Suits.HEARTS)])
+    player = Player(0, 0, [deck[0], deck[2]])
+    print("Player's hand:")
     for card in player.hand:
         print(f"{card[0].value} of {card[1].value}")
+    print("\n")
 
-    dealer = Dealer([(Ranks.TWO, Suits.DIAMONDS), (Ranks.TWO, Suits.SPADES)])
+    dealer = Dealer([deck[1], deck[3]])
+    print("Dealer's hand:")
     for card in dealer.hand:
         print(f"{card[0].value} of {card[1].value}")
+    
     
