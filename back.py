@@ -28,10 +28,29 @@ class Player:
         self.score = score
         self.balance = balance
         self.hand = hand
+    
+    def getScore(self):
+        return self.score
+    
+    def getBalance(self):
+        return self.balance
+    
+    def getHand(self):
+        return self.hand
+
+    def setBalance(self, profit):
+        self.balance += profit
 
 class Dealer:
-    def __init__(self, hand):
+    def __init__(self, hand, score):
         self.hand = hand
+        self.score = score
+
+    def getScore(self):
+        return self.score
+    
+    def getHand(self):
+        return self.hand
 
 class Game:
     deck = [(rank, suit) for rank in Ranks for suit in Suits]

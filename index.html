@@ -12,15 +12,16 @@
       }
 
       function HomePage() {
-        const names = ['Ada Lovelace', 'Grace Hopper', 'Margaret Hamilton'];
+        const [balance, setBalance] = React.useState(1000);
         
-        function handleClick() {
-          console.log("deal card");
+        function handleClick(action) {
+          console.log(`Button clicked: ${action}`);
         }
 
         return (
           <div>
             <Header title="Blackjack" />
+            <p>Balance: ${balance}</p>
             <button onClick={handleClick}>Hit</button>
             <button onClick={handleClick}>Stand</button>
             <button onClick={handleClick}>Double</button>
