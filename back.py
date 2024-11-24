@@ -1,6 +1,9 @@
-from flask import Flask
+from flask import Flask, jsonify, request
+from flask_cors import CORS
 from enum import Enum
 import random
+
+
 
 class Ranks(Enum):
     TWO = "Two"
