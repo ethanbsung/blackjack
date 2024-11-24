@@ -84,8 +84,31 @@ class Game:
     
     @app.route('/api/deal', methods=['POST'])
     def deal_cards():
-        game_state["dealer_cards"] = [random.randint(1, 11), random.randint(1, 11)]
-        game_state["player_cards"] = [random.randint(1, 11), random.randint(1, 11)]
+        game_state["dealer_cards"] = [Game.deck[1], Game.deck[3]]
+        game_state["player_cards"] = [Game.deck[0], Game.deck[2]]
+
+        Game.deck = Game.deck[4:]
+
+        return jsonify({
+            "balance": game_state["balance"],
+            "dealer_cards": [
+                {"rank": game_state["dealer_cards"][0][0].value, "suit": game_state["dealer_cards"][0][1].value},
+                {"rank": game_state["dealer_cards"][1][0].value, "suit": game_state["dealer_cards"][1][1].value}
+            ],
+            "player_cards": [
+                {"rank": game_state["player_cards"][0][0].value, "suit": game_state["player_cards"][0][1].value},
+                {"rank": game_state["player_cards"][1][0].value, "suit": game_state["player_cards"][1][1].value}
+            ]
+        })
+    
+    @app.route('/api/action', methods=['POSt'])
+    def game_action():
+        action = request.json.get('action')
+        if action == 'hit':
+            game_state["player_cards"].append(Game.deck[0])
+            Game.deck = Game.deck[1:]
         return jsonify(game_state)
     
+    if __name__ == '__main__':
+        app.run(debug=True)
     
