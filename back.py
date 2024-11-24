@@ -3,6 +3,15 @@ from flask_cors import CORS
 from enum import Enum
 import random
 
+app = Flask(__name__)
+CORS(app)
+
+game_state = {
+    "balance": 1000,
+    "dealer_cards": [],
+    "player_cards": []
+}
+
 
 
 class Ranks(Enum):
@@ -72,5 +81,11 @@ class Game:
     print("Dealer's hand:")
     for card in dealer.hand:
         print(f"{card[0].value} of {card[1].value}")
+    
+    @app.route('/api/deal', methods=['POST'])
+    def deal_cards():
+        game_state["dealer_cards"] = [random.randint(1, 11), random.randint(1, 11)]
+        game_state["player_cards"] = [random.randint(1, 11), random.randint(1, 11)]
+        return jsonify(game_state)
     
     
