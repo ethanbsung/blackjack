@@ -4,15 +4,15 @@
 import HitButton from "./hit-button";
 
 import { useState } from 'react';
-
+  // title function
   function Header({ title }) {
     return <h1>{title ? title : 'Default title'}</h1>;
   }
-
+  // main page function that displays balance, dealer's cards, and player's cards
   export default function HomePage() {
     const [balance, setBalance] = useState(1000);
-    const [dealerScore, setDealerScore] = useState(0);
-    const [playerScore, setPlayerScore] = useState(0);
+    const [dealerCards, setDealerScore] = useState([0, 0]);
+    const [playerCards, setPlayerScore] = useState([0, 0]);
     function HandleClick(action) {
       console.log(`Button clicked: ${action}`);
     }
@@ -21,8 +21,8 @@ import { useState } from 'react';
       <div>
         <Header title="Blackjack" />
         <p>Balance: ${balance}</p>
-        <p>Dealer: {dealerScore}</p>
-        <p>Player: {playerScore}</p>
+        <p>Dealer: {dealerCards[0]}, {dealerCards[1]}</p>
+        <p>Player: {playerCards[0]}, {playerCards[1]}</p>
   
         <button onClick={() => HandleClick('Hit')}>Hit</button>
         <button onClick={() => HandleClick('Stand')}>Stand</button>
