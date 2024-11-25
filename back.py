@@ -53,6 +53,13 @@ class Player:
     def setBalance(self, profit):
         self.balance += profit
 
+    def playerAces(self):
+        count = 0
+        for card in self.hand:
+            if card == Ranks.ACE:
+                count += 1
+        return count
+
 class Dealer:
     def __init__(self, hand, score):
         self.hand = hand
@@ -63,6 +70,28 @@ class Dealer:
     
     def getHand(self):
         return self.hand
+    
+    def dealerRunout(self):
+        while self.score < 17:
+            card = Game.deck[0]
+            self.hand.append(card)
+            self.score += self.calculateCardValue(card)
+            Game.deck = Game.deck[1:]
+    
+    def calculateCardValue(self, card):
+        if card[0] == Ranks.ACE:
+            return 11
+        elif card[0] in {Ranks.JACK, Ranks.QUEEN, Ranks.KING}:
+            return 10
+        else:
+            return int(card[0].value)
+        
+    def dealerAces(self):
+        count = 0
+        for card in self.hand:
+            if card == Ranks.ACE:
+                count += 1
+        return count
 
 class Game:
     deck = [(rank, suit) for rank in Ranks for suit in Suits]
@@ -77,7 +106,7 @@ class Game:
         print(f"{card[0].value} of {card[1].value}")
     print("\n")
 
-    dealer = Dealer([deck[1], deck[3]])
+    dealer = Dealer([deck[1], deck[3]], 0)
     print("Dealer's hand:")
     for card in dealer.hand:
         print(f"{card[0].value} of {card[1].value}")
@@ -107,7 +136,11 @@ class Game:
         if action == 'hit':
             game_state["player_cards"].append(Game.deck[0])
             Game.deck = Game.deck[1:]
+        elif action == 'stand':
+            Game.dealer.dealerRunout()
+
         return jsonify(game_state)
+    
     
     if __name__ == '__main__':
         app.run(debug=True)

@@ -12,15 +12,26 @@ import { useState } from 'react';
   // main page function that displays balance, dealer's cards, and player's cards
   export default function HomePage() {
     const [balance, setBalance] = useState(1000);
-    const [dealerCards, setDealerScore] = useState(['back_of_card', 'back_of_card']);
-    const [playerCards, setPlayerScore] = useState(['back_of_card', 'back_of_card']);
+    const [dealerCards, setDealerCards] = useState(['back_of_card', 'back_of_card']);
+    const [playerCards, setPlayerCards] = useState(['back_of_card', 'back_of_card']);
     function HandleClick(action) {
       console.log(`Button clicked: ${action}`);
-
       if (action === 'Deal') {
-        const randomCards = ['ace_of_spades', 'king_of_hearts', '2_of_diamonds', '10_of_clubs'];
-        setDealerCards([randomCards[0], randomCards[1]]);
-        setPlayerCards([randomCards[2], randomCards[3]]);
+
+        fetch("http://localhost:5000/api/deal", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setDealerCards(data.dealerCards);
+            setPlayerCards(data.playerCards);
+          })
+          .catch((error) => {
+            console.error("Error fetching deal_cards data:", error);
+          });
       }
     }
 
