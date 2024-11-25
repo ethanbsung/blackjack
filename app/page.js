@@ -18,7 +18,7 @@ import { useState } from 'react';
       console.log(`Button clicked: ${action}`);
       if (action === 'Deal') {
 
-        fetch("http://localhost:5000/api/deal", {
+        fetch("http://localhost:3000/api/deal", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"

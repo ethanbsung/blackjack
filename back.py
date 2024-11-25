@@ -130,7 +130,7 @@ class Game:
             ]
         })
     
-    @app.route('/api/action', methods=['POSt'])
+    @app.route('/api/action', methods=['POST'])
     def game_action():
         action = request.json.get('action')
         if action == 'hit':
