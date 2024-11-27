@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-
 from enum import Enum
 import random
 
@@ -12,8 +11,6 @@ game_state = {
     "dealer_cards": [],
     "player_cards": []
 }
-
-
 
 class Ranks(Enum):
     TWO = "Two"
@@ -34,7 +31,7 @@ class Suits(Enum):
     SPADES = "Spades"
     CLUBS = "Clubs"
     DIAMONDS = "Diamonds"
-    HEARTS = "Hearts" 
+    HEARTS = "Hearts"
 
 class Player:
     def __init__(self, score, balance, hand):
@@ -111,42 +108,42 @@ class Game:
     print("Dealer's hand:")
     for card in dealer.hand:
         print(f"{card[0].value} of {card[1].value}")
-    
-    @app.route('/api/deal', methods=['POST'])
-    def deal_cards():
-        if len(Game.deck) < 4:
-            return jsonify({"error": "Not enough cards in the deck"}), 400
 
-        game_state["dealer_cards"] = [Game.deck[1], Game.deck[3]]
-        game_state["player_cards"] = [Game.deck[0], Game.deck[2]]
+@app.route('/api/deal', methods=['POST'])
+def deal_cards():
+    if len(Game.deck) < 4:
+        return jsonify({"error": "Not enough cards in the deck"}), 400
 
-        Game.deck = Game.deck[4:]
-        print("Deck after dealing:", Game.deck)
+    game_state["dealer_cards"] = [Game.deck[1], Game.deck[3]]
+    game_state["player_cards"] = [Game.deck[0], Game.deck[2]]
 
-        return jsonify({
-            "balance": game_state["balance"],
-            "dealer_cards": [
-                {"rank": game_state["dealer_cards"][0][0].value, "suit": game_state["dealer_cards"][0][1].value},
-                {"rank": game_state["dealer_cards"][1][0].value, "suit": game_state["dealer_cards"][1][1].value}
-            ],
-            "player_cards": [
-                {"rank": game_state["player_cards"][0][0].value, "suit": game_state["player_cards"][0][1].value},
-                {"rank": game_state["player_cards"][1][0].value, "suit": game_state["player_cards"][1][1].value}
-            ]
-        })
-    
-    @app.route('/api/action', methods=['POST'])
-    def game_action():
-        action = request.json.get('action')
-        if action == 'hit':
-            game_state["player_cards"].append(Game.deck[0])
-            Game.deck = Game.deck[1:]
-        elif action == 'stand':
-            Game.dealer.dealerRunout()
+    Game.deck = Game.deck[4:]
 
-        return jsonify(game_state)
-    
-    
-    if __name__ == '__main__':
-        app.run(host="0.0.0.0", port=5000, debug=True)
-    
+    response = {
+        "balance": game_state["balance"],
+        "dealer_cards": [
+            {"rank": game_state["dealer_cards"][0][0].value, "suit": game_state["dealer_cards"][0][1].value},
+            {"rank": game_state["dealer_cards"][1][0].value, "suit": game_state["dealer_cards"][1][1].value}
+        ],
+        "player_cards": [
+            {"rank": game_state["player_cards"][0][0].value, "suit": game_state["player_cards"][0][1].value},
+            {"rank": game_state["player_cards"][1][0].value, "suit": game_state["player_cards"][1][1].value}
+        ]
+    }
+
+    print("Response sent to frontend:", response)
+    return jsonify(response)
+
+@app.route('/api/action', methods=['POST'])
+def game_action():
+    action = request.json.get('action')
+    if action == 'hit':
+        game_state["player_cards"].append(Game.deck[0])
+        Game.deck = Game.deck[1:]
+    elif action == 'stand':
+        Game.dealer.dealerRunout()
+
+    return jsonify(game_state)
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=5000, debug=True)
