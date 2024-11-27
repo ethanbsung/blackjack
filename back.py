@@ -1,10 +1,11 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+
 from enum import Enum
 import random
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 game_state = {
     "balance": 1000,
@@ -113,10 +114,14 @@ class Game:
     
     @app.route('/api/deal', methods=['POST'])
     def deal_cards():
+        if len(Game.deck) < 4:
+            return jsonify({"error": "Not enough cards in the deck"}), 400
+
         game_state["dealer_cards"] = [Game.deck[1], Game.deck[3]]
         game_state["player_cards"] = [Game.deck[0], Game.deck[2]]
 
         Game.deck = Game.deck[4:]
+        print("Deck after dealing:", Game.deck)
 
         return jsonify({
             "balance": game_state["balance"],
@@ -143,5 +148,5 @@ class Game:
     
     
     if __name__ == '__main__':
-        app.run(debug=True)
+        app.run(host="0.0.0.0", port=5000, debug=True)
     

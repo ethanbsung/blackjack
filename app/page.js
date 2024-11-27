@@ -18,7 +18,7 @@ import { useState } from 'react';
       console.log(`Button clicked: ${action}`);
       if (action === 'Deal') {
 
-        fetch("http://localhost:3000/api/deal", {
+        fetch("http://127.0.0.1:5000/api/deal", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -26,11 +26,13 @@ import { useState } from 'react';
         })
           .then((response) => response.json())
           .then((data) => {
-            setDealerCards(data.dealerCards);
-            setPlayerCards(data.playerCards);
+            const dealerCardImages = data.dealer_cards.map(card => `${card.rank}_of_${card.suit}`);
+            const playerCardImages = data.player_cards.map(card => `${card.rank}_of_${card.suit}`);
+            setDealerCards(dealerCardImages);
+            setPlayerCards(playerCardImages);
           })
           .catch((error) => {
-            console.error("Error fetching deal_cards data:", error);
+              console.error("Error fetching deal_cards data:", error);
           });
       }
     }
@@ -63,9 +65,9 @@ import { useState } from 'react';
               <img
                 key={index}
                 src={`/cards/${card}.png`} // Dynamically load card image
-                alt={`Player Card ${index + 1}`}
+                alt={`Dealer Card ${index + 1}`}
                 style={{ width: '100px', margin: '5px' }}
-              />
+            />
             ))}
           </div>
         </div>
